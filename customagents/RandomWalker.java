@@ -1,4 +1,4 @@
-package custom_agents;
+package customagents;
 
 import java.util.HashMap;
 import java.util.List;
@@ -154,7 +154,7 @@ public class RandomWalker extends Agent {
 	 * 
 	 * @param u
 	 *            is the utility
-	 * @param t
+	 * @param t1
 	 *            is the time as fraction of the total available time (t=0 at
 	 *            start, and t=1 at end time)
 	 * @return the probability of an accept at time t
