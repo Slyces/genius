@@ -29,40 +29,35 @@ public class RandomWalker extends Agent {
 	public void init() {
 		super.init();
 		rand = new Random();
+		MINIMUM_BID_UTILITY = utilitySpace.getReservationValueUndiscounted();
 	}
 
-	@Override
+	@Override	
 	public Action chooseAction() {
-		Bid bid = utilitySpace.getDomain().getRandomBid(rand);
-		Action action = new Offer(getAgentID(), bid);
-		return action;
-	}
-
-	public Action chooseAction1() {
 		Action action = null;
 		try {
-			if (actionOfPartner == null) {
-				action = chooseRandomBidAction();
-			}
-			if (actionOfPartner instanceof Offer) {
-				Bid partnerBid = ((Offer) actionOfPartner).getBid();
-				double offeredUtilFromOpponent = getUtility(partnerBid);
-				// get current time
-				double time = timeline.getTime();
-				action = chooseRandomBidAction();
-				Bid myBid = ((Offer) action).getBid();
-				double myOfferedUtil = getUtility(myBid);
-				// accept under certain circumstances
-				if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time)) {
-					action = new Accept(getAgentID(), lastPartnerBid);
-				}
-			}
+		if (actionOfPartner == null) {
+		action = chooseRandomBidAction();
+		}
+		if (actionOfPartner instanceof Offer) {
+		Bid partnerBid = ((Offer) actionOfPartner).getBid();
+		double offeredUtilFromOpponent = getUtility(partnerBid);
+		// get current time
+		double time = timeline.getTime();
+		action = chooseRandomBidAction();
+		Bid myBid = ((Offer) action).getBid();
+		double myOfferedUtil = getUtility(myBid);
+		// accept under certain circumstances
+		if (isAcceptable(offeredUtilFromOpponent,myOfferedUtil,time)) {
+		action = new Accept(getAgentID(), lastPartnerBid);
+		}
+		}
 		} catch (Exception e) {
-			e.printStackTrace();
-			action = new Accept(getAgentID(), lastPartnerBid); // best guess if things go wrong.
+		e.printStackTrace();
+		action = new Accept(getAgentID(), lastPartnerBid); // best guess if things go wrong.
 		}
 		return action;
-	}
+		}
 
 	public void ReceiveMessage(Action opponentAction) {
 		if (opponentAction instanceof Offer)
